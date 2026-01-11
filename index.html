@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>النور للاستثمار العقارية</title>
+  <meta name="description" content="النور للاستثمار العقارية - إيجارات وبيع بيوت وشقق ومكاتب ومحلات" />
+  <style>
+    :root{
+      --bg:#0b1220; --muted:#8aa0c8; --text:#eaf2ff; --line:rgba(255,255,255,.08);
+      --brand:#5eead4; --brand2:#60a5fa; --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
+      background:
+        radial-gradient(1100px 700px at 85% -10%, rgba(96,165,250,.25), transparent 60%),
+        radial-gradient(900px 700px at 10% 0%, rgba(94,234,212,.18), transparent 55%),
+        linear-gradient(180deg, #070b14, var(--bg));
+      color:var(--text);
+    }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1150px; margin:0 auto; padding:0 18px}
+
+    header{position:sticky; top:0; z-index:20; backdrop-filter: blur(10px);
+      background: rgba(7,11,20,.65); border-bottom: 1px solid var(--line);}
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:12px;}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800;}
+    .logo{width:42px; height:42px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(94,234,212,.95), rgba(96,165,250,.95));
+      display:grid; place-items:center; color:#08101f; font-weight:900;}
+    nav ul{list-style:none; margin:0; padding:0; display:flex; gap:10px; flex-wrap:wrap;}
+    .chip{padding:10px 12px; border:1px solid var(--line); border-radius:999px;
+      background: rgba(255,255,255,.03); color: var(--muted); font-weight:650; cursor:pointer;}
+    .chip.active{background: linear-gradient(135deg, rgba(94,234,212,.22), rgba(96,165,250,.18));
+      border-color: rgba(94,234,212,.6); color: var(--text);}
+
+    .cta{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+    .btn{border:none; cursor:pointer; padding:11px 14px; border-radius:12px; color:#07101f;
+      background: linear-gradient(135deg, var(--brand), var(--brand2)); font-weight:800;}
+    .btn.secondary{color: var(--text); background: rgba(255,255,255,.04); border:1px solid var(--line);}
+
+    .hero{padding:24px 0 10px;}
+    .hero-card{background: rgba(255,255,255,.03); border:1px solid var(--line); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding:18px;}
+    .hero h1{margin:0 0 10px; font-size: clamp(24px, 3.2vw, 38px);}
+    .hero p{margin:0; color: var(--muted); line-height:1.9}
+
+    .controls{display:grid; grid-template-columns: 1.2fr .8fr .8fr; gap:10px; margin-top:14px;}
+    .input{width:100%; background: rgba(7,11,20,.35); border:1px solid var(--line); border-radius: 14px;
+      padding:12px; color: var(--text); outline:none;}
+    .section{padding: 10px 0 34px}
+    .section-title{display:flex; align-items:end; justify-content:space-between; gap:10px; flex-wrap:wrap; margin: 10px 0 12px;}
+    .section-title h2{margin:0; font-size:18px}
+    .section-title small{color:var(--muted)}
+
+    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px;}
+    .card{background: rgba(255,255,255,.03); border:1px solid var(--line); border-radius: var(--radius);
+      overflow:hidden; transition:.2s ease; display:flex; flex-direction:column;}
+    .card:hover{transform: translateY(-2px); border-color: rgba(94,234,212,.38); box-shadow: 0 18px 50px rgba(0,0,0,.35);}
+    .thumb{height:150px; background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      display:flex; align-items:flex-end; padding:12px;}
+    .badge{padding:7px 10px; border-radius:999px; font-size:12px; font-weight:800;
+      background: rgba(7,11,20,.55); border:1px solid rgba(255,255,255,.12); backdrop-filter: blur(8px);}
+    .content{padding:12px 12px 14px; display:flex; flex-direction:column; gap:8px;}
+    .title{font-weight:850; font-size:15px; margin:0}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; color:var(--muted); font-size:12.5px}
+    .price{display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:10px;
+      border-top:1px dashed rgba(255,255,255,.10); margin-top:8px;}
+    .pill{padding:8px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03); color: var(--text); font-weight:750; cursor:pointer;}
+
+    .empty{grid-column:1/-1; padding:14px; border-radius:18px; border:1px solid var(--line);
+      background: rgba(255,255,255,.03); color: var(--muted); line-height:1.9;}
+
+    /* Modal */
+    .overlay{position:fixed; inset:0; background: rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; padding:18px; z-index:50;}
+    .modal{width:min(760px, 100%); background: #0b1428; border:1px solid rgba(255,255,255,.12); border-radius: 22px; box-shadow: var(--shadow); overflow:hidden;}
+    .modal-head{padding:14px; border-bottom:1px solid rgba(255,255,255,.10); display:flex; justify-content:space-between; align-items:center; gap:12px;}
+    .close{border:none; cursor:pointer; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10); color: var(--text); padding:8px 10px; border-radius:12px; font-weight:800;}
+    .modal-body{padding:14px}
+    .detail-grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:12px;}
+    .big-thumb{height:230px; border-radius: 18px; border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));}
+    .detail{border:1px solid rgba(255,255,255,.10); border-radius: 18px; padding:12px; background: rgba(255,255,255,.03);}
+    .k{display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px dashed rgba(255,255,255,.10); font-size:13px; color: var(--muted);}
+    .k:last-child{border-bottom:none}
+    .k b{color: var(--text)}
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+
+    @media (max-width: 900px){
+      .grid{grid-template-columns: repeat(2, 1fr)}
+      .detail-grid{grid-template-columns:1fr}
+      .controls{grid-template-columns:1fr}
+    }
+    @media (max-width: 560px){
+      .grid{grid-template-columns: 1fr}
+      nav ul{display:none}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="container">
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">ن</div>
+        <div>
+          <div style="font-size:14px; font-weight:900;">النور للاستثمار العقارية</div>
+          <div style="font-size:12px; color:var(--muted);">العروض يتم تعديلها من ملف data.txt</div>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a class="chip" href="#rentals">الإيجارات</a></li>
+          <li><a class="chip" href="#sale">بيوت للبيع</a></li>
+        </ul>
+      </nav>
+
+      <div class="cta">
+        <a class="btn" id="whatsTop" target="_blank" rel="noreferrer">واتساب الآن</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-card">
+      <h1>عقارات النور — بحث سريع وتفاصيل واضحة</h1>
+      <p>للتعديل: افتح ملف <b>data.txt</b> فقط وغيّر النصوص.</p>
+
+      <div class="controls">
+        <input class="input" id="q" placeholder="ابحث: شقة / بيت / مدينة..." />
+        <select class="input" id="city"><option value="">كل المدن</option></select>
+        <select class="input" id="sort">
+          <option value="new">الترتيب: الأحدث</option>
+          <option value="priceAsc">السعر: الأقل</option>
+          <option value="priceDesc">السعر: الأعلى</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="rentals">
+  <div class="container">
+    <div class="section-title">
+      <div><h2>قسم الإيجارات</h2><small>شقق • بيوت • مكاتب • محلات</small></div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <span class="chip active" data-rent="all">الكل</span>
+        <span class="chip" data-rent="apartment">شقق</span>
+        <span class="chip" data-rent="house">بيوت</span>
+        <span class="chip" data-rent="office">مكاتب</span>
+        <span class="chip" data-rent="shop">محلات</span>
+      </div>
+    </div>
+    <div class="grid" id="rentGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="sale">
+  <div class="container">
+    <div class="section-title">
+      <div><h2>بيوت للبيع</h2><small>عروض بيع</small></div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <span class="chip active" data-sale="all">الكل</span>
+        <span class="chip" data-sale="house">بيوت</span>
+      </div>
+    </div>
+    <div class="grid" id="saleGrid"></div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-head">
+      <b id="mTitle">تفاصيل العقار</b>
+      <button class="close" id="mClose">إغلاق</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid">
+        <div class="big-thumb" id="bigThumb" aria-hidden="true"></div>
+        <div class="detail">
+          <div class="k"><span>القسم</span> <b id="mType">—</b></div>
+          <div class="k"><span>المدينة</span> <b id="mCity">—</b></div>
+          <div class="k"><span>المساحة</span> <b id="mArea">—</b></div>
+          <div class="k"><span>السعر</span> <b id="mPrice">—</b></div>
+          <div class="k"><span>الوصف</span> <b id="mDesc">—</b></div>
+          <div class="actions">
+            <a class="btn" id="mWhats" target="_blank" rel="noreferrer">تواصل واتساب</a>
+            <button class="btn secondary" id="mCopy">نسخ التفاصيل</button>
+          </div>
+          <div style="color:var(--muted); font-size:12.5px; margin-top:10px; line-height:1.8;">
+            التعديل يتم من ملف data.txt (سهل جداً).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ==================== إعدادات بسيطة ====================
+  const WHATSAPP_NUMBER = "9640000000000";
+  const CURRENCY = "د.ع";
+  const DATA_FILE = "data.txt"; // نفس اسم الملف
+  // =======================================================
+
+  const $ = (s)=>document.querySelector(s);
+  const $$ = (s)=>Array.from(document.querySelectorAll(s));
+
+  const rentGrid = $("#rentGrid");
+  const saleGrid = $("#saleGrid");
+  const q = $("#q"), city = $("#city"), sort = $("#sort");
+
+  const overlay = $("#overlay");
+  const mClose = $("#mClose");
+  const mTitle = $("#mTitle");
+  const mType = $("#mType");
+  const mCity = $("#mCity");
+  const mArea = $("#mArea");
+  const mPrice = $("#mPrice");
+  const mDesc = $("#mDesc");
+  const mWhats = $("#mWhats");
+  const mCopy = $("#mCopy");
+  const bigThumb = $("#bigThumb");
+
+  $("#whatsTop").href = makeWhatsLink("مرحباً، أريد الاستفسار عن عقارات النور للاستثمار العقارية.");
+
+  let listings = [];
+  let rentFilter = "all";
+  let saleFilter = "all";
+
+  function makeWhatsLink(text){
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  }
+  function fmtPrice(n){
+    const num = Number(n) || 0;
+    return new Intl.NumberFormat("ar-IQ").format(num) + " " + CURRENCY;
+  }
+
+  function normalizeKind(v){
+    v = (v||"").toString().trim();
+    return (v.includes("للبيع") || v.toLowerCase()==="sale") ? "sale" : "rent";
+  }
+  function normalizeCat(v){
+    v = (v||"").toString().trim();
+    if(v.includes("شقة") || v.toLowerCase()==="apartment") return "apartment";
+    if(v.includes("بيت") || v.toLowerCase()==="house") return "house";
+    if(v.includes("مكتب") || v.toLowerCase()==="office") return "office";
+    if(v.includes("محل") || v.toLowerCase()==="shop") return "shop";
+    return "apartment";
+  }
+
+  function typeLabel(item){
+    if(item.kind==="rent"){
+      if(item.cat==="apartment") return "إيجار - شقة";
+      if(item.cat==="house") return "إيجار - بيت";
+      if(item.cat==="office") return "إيجار - مكتب";
+      if(item.cat==="shop") return "إيجار - محل";
+      return "إيجار";
+    }
+    return "بيع - بيت";
+  }
+  function badgeLabel(item){ return item.kind==="sale" ? "للبيع" : "إيجار"; }
+
+  function buildCard(item){
+    const el = document.createElement("div");
+    el.className = "card";
+    const bg = item.image ? `style="background-image:url('${item.image}'); background-size:cover; background-position:center;"` : "";
+    el.innerHTML = `
+      <div class="thumb" ${bg}>
+        <span class="badge">${badgeLabel(item)} • ${item.city || ""}</span>
+      </div>
+      <div class="content">
+        <p class="title">${item.title || ""}</p>
+        <div class="meta">
+          <span>القسم: ${typeLabel(item)}</span>
+          <span>المساحة: ${item.area || 0} م²</span>
+        </div>
+        <div class="price">
+          <b>${fmtPrice(item.price)}</b>
+          <button class="pill" data-open="${item.id}">التفاصيل</button>
+        </div>
+      </div>
+    `;
+    return el;
+  }
+
+  function buildCityOptions(){
+    const cities = [...new Set(listings.map(x=>x.city).filter(Boolean))];
+    city.innerHTML = `<option value="">كل المدن</option>` + cities.map(c=>`<option>${c}</option>`).join("");
+  }
+
+  function getFiltered(){
+    const term = (q.value||"").trim().toLowerCase();
+    const cityVal = city.value || "";
+
+    let items = listings.filter(x=>{
+      const hay = (x.title+" "+x.city+" "+x.desc+" "+x.kind+" "+x.cat).toLowerCase();
+      const okTerm = !term || hay.includes(term);
+      const okCity = !cityVal || x.city===cityVal;
+      return okTerm && okCity;
+    });
+
+    const s = sort.value;
+    items = items.slice().sort((a,b)=>{
+      if(s==="priceAsc") return a.price - b.price;
+      if(s==="priceDesc") return b.price - a.price;
+      return b.id - a.id;
+    });
+    return items;
+  }
+
+  function render(){
+    const items = getFiltered();
+    let rentItems = items.filter(x=>x.kind==="rent");
+    let saleItems = items.filter(x=>x.kind==="sale");
+
+    if(rentFilter!=="all") rentItems = rentItems.filter(x=>x.cat===rentFilter);
+    if(saleFilter!=="all") saleItems = saleItems.filter(x=>x.cat===saleFilter);
+
+    rentGrid.innerHTML = "";
+    saleGrid.innerHTML = "";
+
+    if(rentItems.length===0) rentGrid.innerHTML = `<div class="empty">لا توجد عروض إيجار حالياً ضمن هذا الفلتر.</div>`;
+    else rentItems.forEach(it=>rentGrid.appendChild(buildCard(it)));
+
+    if(saleItems.length===0) saleGrid.innerHTML = `<div class="empty">لا توجد عروض للبيع حالياً ضمن هذا الفلتر.</div>`;
+    else saleItems.forEach(it=>saleGrid.appendChild(buildCard(it)));
+  }
+
+  function setActiveChips(){
+    $$('[data-rent]').forEach(ch=>ch.classList.toggle("active", ch.dataset.rent===rentFilter));
+    $$('[data-sale]').forEach(ch=>ch.classList.toggle("active", ch.dataset.sale===saleFilter));
+  }
+
+  function openModal(id){
+    const it = listings.find(x=>x.id===id);
+    if(!it) return;
+
+    mTitle.textContent = it.title || "تفاصيل العقار";
+    mType.textContent = typeLabel(it);
+    mCity.textContent = it.city || "—";
+    mArea.textContent = (it.area || 0) + " م²";
+    mPrice.textContent = fmtPrice(it.price);
+    mDesc.textContent = it.desc || "—";
+
+    if(it.image){
+      bigThumb.style.backgroundImage = `url('${it.image}')`;
+      bigThumb.style.backgroundSize = "cover";
+      bigThumb.style.backgroundPosition = "center";
+    } else {
+      bigThumb.style.backgroundImage = "";
+    }
+
+    const text =
+`النور للاستثمار العقارية
+العقار: ${it.title}
+القسم: ${typeLabel(it)}
+المدينة: ${it.city}
+المساحة: ${it.area} م²
+السعر: ${fmtPrice(it.price)}
+تفاصيل: ${it.desc}`;
+
+    mWhats.href = makeWhatsLink(text);
+    mCopy.onclick = async ()=>{
+      try{ await navigator.clipboard.writeText(text); alert("تم النسخ ✅"); }
+      catch(e){ alert("تعذر النسخ."); }
+    };
+
+    overlay.style.display = "flex";
+  }
+  function closeModal(){ overlay.style.display = "none"; }
+
+  // ===================== قراءة data.txt =====================
+  function parseDataText(txt){
+    const lines = txt.split(/\r?\n/);
+    const items = [];
+    let cur = null;
+
+    function commit(){
+      if(!cur) return;
+      // إذا ما عنده عنوان، لا نضيفه
+      if(!cur.title) { cur=null; return; }
+      cur.id = items.length + 1;
+      cur.kind = normalizeKind(cur.kind);
+      cur.cat = normalizeCat(cur.cat);
+      cur.area = Number(cur.area) || 0;
+      cur.price = Number(String(cur.price).replace(/[^\d.]/g,"")) || 0;
+      items.push(cur);
+      cur = null;
+    }
+
+    for(const raw of lines){
+      const line = raw.trim();
+      if(!line || line.startsWith("#")) continue;
+
+      if(line === "[عقار]"){
+        commit();
+        cur = { kind:"ايجار", cat:"شقة", title:"", city:"", area:0, price:0, desc:"", image:"" };
+        continue;
+      }
+
+      if(!cur) continue;
+
+      const eq = line.indexOf("=");
+      if(eq === -1) continue;
+
+      const key = line.slice(0, eq).trim();
+      const val = line.slice(eq+1).trim();
+
+      if(key === "القسم") cur.kind = val;
+      else if(key === "النوع") cur.cat = val;
+      else if(key === "العنوان") cur.title = val;
+      else if(key === "المدينة") cur.city = val;
+      else if(key === "المساحة") cur.area = val;
+      else if(key === "السعر") cur.price = val;
+      else if(key === "الوصف") cur.desc = val;
+      else if(key === "الصورة") cur.image = val;
+    }
+    commit();
+    return items;
+  }
+
+  async function loadData(){
+    try{
+      const res = await fetch(DATA_FILE, { cache: "no-store" });
+      if(!res.ok) throw new Error("data.txt not found");
+      const txt = await res.text();
+      listings = parseDataText(txt);
+      buildCityOptions();
+      setActiveChips();
+      render();
+    }catch(e){
+      console.error(e);
+      rentGrid.innerHTML = `<div class="empty">تعذر تحميل ملف data.txt. تأكد أنه موجود بجانب index.html</div>`;
+      saleGrid.innerHTML = `<div class="empty">تعذر تحميل ملف data.txt. تأكد أنه موجود بجانب index.html</div>`;
+    }
+  }
+  // ==========================================================
+
+  // Events
+  document.addEventListener("click", (e)=>{
+    const btn = e.target.closest("[data-open]");
+    if(btn) openModal(Number(btn.dataset.open));
+
+    const rent = e.target.closest("[data-rent]");
+    if(rent){ rentFilter = rent.dataset.rent; setActiveChips(); render(); }
+
+    const sale = e.target.closest("[data-sale]");
+    if(sale){ saleFilter = sale.dataset.sale; setActiveChips(); render(); }
+  });
+  overlay.addEventListener("click", (e)=>{ if(e.target===overlay) closeModal(); });
+  mClose.onclick = closeModal;
+
+  [q, city, sort].forEach(el => el.addEventListener("input", ()=> render()));
+
+  // تشغيل
+  loadData();
+</script>
+</body>
+</html>
