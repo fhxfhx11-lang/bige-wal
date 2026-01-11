@@ -4,104 +4,321 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>النور للاستثمار العقارية</title>
-  <meta name="description" content="النور للاستثمار العقارية - إيجارات وبيع بيوت وشقق ومكاتب ومحلات" />
+  <meta name="description" content="النور للاستثمار العقارية - إيجارات وبيع شقق وبيوت ومتاجر" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#0b1220; --muted:#8aa0c8; --text:#eaf2ff; --line:rgba(255,255,255,.08);
-      --brand:#5eead4; --brand2:#60a5fa; --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --text:#eaf2ff;
+      --muted:#a9bdd6;
+      --line:rgba(255,255,255,.10);
+      --brand:#22c55e;
+      --brand2:#16a34a;
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
       --radius:18px;
     }
+
     *{box-sizing:border-box}
+    a{color:inherit;text-decoration:none}
+
+    /* ====== Animated Luxury Background (Aurora) ====== */
     body{
-      margin:0; font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
-      background:
-        radial-gradient(1100px 700px at 85% -10%, rgba(96,165,250,.25), transparent 60%),
-        radial-gradient(900px 700px at 10% 0%, rgba(94,234,212,.18), transparent 55%),
-        linear-gradient(180deg, #070b14, var(--bg));
+      margin:0;
+      font-family:"Cairo", system-ui, sans-serif;
       color:var(--text);
+      position:relative;
+      overflow-x:hidden;
     }
-    a{color:inherit; text-decoration:none}
+    body::before{
+      content:"";
+      position: fixed;
+      inset: -30%;
+      z-index: -2;
+      background:
+        radial-gradient(600px 450px at 20% 20%, rgba(34,197,94,.22), transparent 60%),
+        radial-gradient(700px 520px at 80% 30%, rgba(96,165,250,.18), transparent 60%),
+        radial-gradient(620px 520px at 55% 85%, rgba(16,185,129,.20), transparent 60%),
+        radial-gradient(800px 600px at 10% 80%, rgba(59,130,246,.14), transparent 60%),
+        linear-gradient(180deg, #070b14, #0b1220);
+      filter: blur(18px);
+      transform: translate3d(0,0,0);
+      animation: auroraMove 14s ease-in-out infinite alternate;
+    }
+    @keyframes auroraMove{
+      0%   { transform: translate(-2%, -2%) scale(1.02) rotate(0deg); }
+      50%  { transform: translate(2%, -1%)  scale(1.05) rotate(2deg); }
+      100% { transform: translate(-1%, 2%)  scale(1.03) rotate(-2deg); }
+    }
+    body::after{
+      content:"";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(900px 400px at 30% 0%, rgba(255,255,255,.06), transparent 65%),
+        radial-gradient(700px 420px at 80% 100%, rgba(255,255,255,.04), transparent 65%);
+      opacity: .9;
+      animation: glowPulse 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes glowPulse{
+      0%,100% { opacity: .75; }
+      50%     { opacity: 1; }
+    }
+
+    /* ====== Layout ====== */
     .container{max-width:1150px; margin:0 auto; padding:0 18px}
 
-    header{position:sticky; top:0; z-index:20; backdrop-filter: blur(10px);
-      background: rgba(7,11,20,.65); border-bottom: 1px solid var(--line);}
-    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:12px;}
-    .brand{display:flex; align-items:center; gap:10px; font-weight:800;}
-    .logo{width:42px; height:42px; border-radius:14px;
-      background: linear-gradient(135deg, rgba(94,234,212,.95), rgba(96,165,250,.95));
-      display:grid; place-items:center; color:#08101f; font-weight:900;}
-    nav ul{list-style:none; margin:0; padding:0; display:flex; gap:10px; flex-wrap:wrap;}
-    .chip{padding:10px 12px; border:1px solid var(--line); border-radius:999px;
-      background: rgba(255,255,255,.03); color: var(--muted); font-weight:650; cursor:pointer;}
-    .chip.active{background: linear-gradient(135deg, rgba(94,234,212,.22), rgba(96,165,250,.18));
-      border-color: rgba(94,234,212,.6); color: var(--text);}
+    header{
+      position:sticky; top:0; z-index:20;
+      backdrop-filter: blur(10px);
+      background: rgba(7,11,20,.55);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0; gap:12px;
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800}
+    .logo{
+      width:42px; height:42px; border-radius:14px;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      display:grid; place-items:center;
+      color:#061a10; font-weight:900;
+      box-shadow: 0 14px 30px rgba(34,197,94,.15);
+    }
 
-    .cta{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-    .btn{border:none; cursor:pointer; padding:11px 14px; border-radius:12px; color:#07101f;
-      background: linear-gradient(135deg, var(--brand), var(--brand2)); font-weight:800;}
-    .btn.secondary{color: var(--text); background: rgba(255,255,255,.04); border:1px solid var(--line);}
+    nav ul{list-style:none; margin:0; padding:0; display:flex; gap:10px; flex-wrap:wrap}
+    .chip{
+      padding:9px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-weight:700;
+      cursor:pointer;
+      user-select:none;
+      transition:.18s ease;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .chip:hover{transform: translateY(-1px); border-color: rgba(34,197,94,.35); color:var(--text)}
+    .chip.active{
+      background: linear-gradient(135deg, rgba(34,197,94,.22), rgba(96,165,250,.14));
+      border-color: rgba(34,197,94,.55);
+      color: var(--text);
+    }
 
-    .hero{padding:24px 0 10px;}
-    .hero-card{background: rgba(255,255,255,.03); border:1px solid var(--line); border-radius: var(--radius);
-      box-shadow: var(--shadow); padding:18px;}
-    .hero h1{margin:0 0 10px; font-size: clamp(24px, 3.2vw, 38px);}
-    .hero p{margin:0; color: var(--muted); line-height:1.9}
+    .btn{
+      border:none; cursor:pointer;
+      padding:11px 14px;
+      border-radius:14px;
+      color:#071a10;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      font-weight:900;
+      transition:.18s ease;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn.secondary{
+      background: rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      color: var(--text);
+      font-weight:800;
+    }
 
-    .controls{display:grid; grid-template-columns: 1.2fr .8fr .8fr; gap:10px; margin-top:14px;}
-    .input{width:100%; background: rgba(7,11,20,.35); border:1px solid var(--line); border-radius: 14px;
-      padding:12px; color: var(--text); outline:none;}
-    .section{padding: 10px 0 34px}
-    .section-title{display:flex; align-items:end; justify-content:space-between; gap:10px; flex-wrap:wrap; margin: 10px 0 12px;}
+    .glass{
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+    }
+
+    /* ====== Market ====== */
+    .hero{padding:22px 0 10px;}
+    .hero-card{padding:18px}
+    .hero h1{margin:0 0 8px; font-size: clamp(24px, 3.2vw, 40px); line-height:1.2}
+    .hero p{margin:0; color:var(--muted); line-height:1.9}
+
+    .controls{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr .8fr auto;
+      gap:10px;
+      margin-top:14px;
+      align-items:center;
+    }
+    .input{
+      width:100%;
+      background: rgba(7,11,20,.35);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      color: var(--text);
+      outline:none;
+    }
+    .input::placeholder{color: rgba(169,189,214,.7)}
+
+    section{padding: 18px 0 40px}
+    .section-title{
+      display:flex; align-items:end; justify-content:space-between;
+      gap:10px; flex-wrap:wrap;
+      margin: 10px 0 14px;
+    }
     .section-title h2{margin:0; font-size:18px}
     .section-title small{color:var(--muted)}
 
-    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px;}
-    .card{background: rgba(255,255,255,.03); border:1px solid var(--line); border-radius: var(--radius);
-      overflow:hidden; transition:.2s ease; display:flex; flex-direction:column;}
-    .card:hover{transform: translateY(-2px); border-color: rgba(94,234,212,.38); box-shadow: 0 18px 50px rgba(0,0,0,.35);}
-    .thumb{height:150px; background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      display:flex; align-items:flex-end; padding:12px;}
-    .badge{padding:7px 10px; border-radius:999px; font-size:12px; font-weight:800;
-      background: rgba(7,11,20,.55); border:1px solid rgba(255,255,255,.12); backdrop-filter: blur(8px);}
-    .content{padding:12px 12px 14px; display:flex; flex-direction:column; gap:8px;}
-    .title{font-weight:850; font-size:15px; margin:0}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .card{
+      overflow:hidden;
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition:.2s ease;
+      display:flex; flex-direction:column;
+    }
+    .card:hover{
+      transform: translateY(-4px);
+      border-color: rgba(34,197,94,.35);
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    }
+    .thumb{
+      height:150px;
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      display:flex; align-items:flex-end;
+      padding:12px;
+    }
+    .badge{
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      background: rgba(7,11,20,.55);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(8px);
+    }
+    .content{padding:12px 12px 14px; display:flex; flex-direction:column; gap:8px}
+    .title{margin:0; font-weight:900; font-size:15px}
     .meta{display:flex; gap:10px; flex-wrap:wrap; color:var(--muted); font-size:12.5px}
-    .price{display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:10px;
-      border-top:1px dashed rgba(255,255,255,.10); margin-top:8px;}
-    .pill{padding:8px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03); color: var(--text); font-weight:750; cursor:pointer;}
+    .price{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; padding-top:10px; margin-top:8px;
+      border-top:1px dashed rgba(255,255,255,.12);
+    }
+    .pill{
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-weight:800;
+      cursor:pointer;
+    }
+    .empty{
+      grid-column:1/-1;
+      padding:14px;
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      line-height:1.9;
+    }
 
-    .empty{grid-column:1/-1; padding:14px; border-radius:18px; border:1px solid var(--line);
-      background: rgba(255,255,255,.03); color: var(--muted); line-height:1.9;}
-
-    /* Modal */
-    .overlay{position:fixed; inset:0; background: rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; padding:18px; z-index:50;}
-    .modal{width:min(760px, 100%); background: #0b1428; border:1px solid rgba(255,255,255,.12); border-radius: 22px; box-shadow: var(--shadow); overflow:hidden;}
-    .modal-head{padding:14px; border-bottom:1px solid rgba(255,255,255,.10); display:flex; justify-content:space-between; align-items:center; gap:12px;}
-    .close{border:none; cursor:pointer; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10); color: var(--text); padding:8px 10px; border-radius:12px; font-weight:800;}
+    /* ====== Modal ====== */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center; justify-content:center;
+      padding:18px;
+      z-index:50;
+    }
+    .modal{
+      width:min(820px, 100%);
+      border-radius: 22px;
+      overflow:hidden;
+    }
+    .modal-head{
+      padding:14px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex; justify-content:space-between; gap:12px; align-items:center;
+    }
+    .close{
+      border:none; cursor:pointer;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      padding:8px 10px; border-radius:12px;
+      font-weight:900;
+    }
     .modal-body{padding:14px}
-    .detail-grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:12px;}
-    .big-thumb{height:230px; border-radius: 18px; border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));}
-    .detail{border:1px solid rgba(255,255,255,.10); border-radius: 18px; padding:12px; background: rgba(255,255,255,.03);}
-    .k{display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px dashed rgba(255,255,255,.10); font-size:13px; color: var(--muted);}
+    .detail-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:12px;
+    }
+    .big-thumb{
+      height:240px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    }
+    .detail{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding:12px;
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .k{
+      display:flex; justify-content:space-between; gap:10px;
+      padding:8px 0;
+      border-bottom:1px dashed rgba(255,255,255,.12);
+      font-size:13px;
+      color: var(--muted);
+    }
     .k:last-child{border-bottom:none}
     .k b{color: var(--text)}
     .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
 
+    /* ====== About / Branches boxes ====== */
+    .box{padding:18px}
+    .box h2{margin:0 0 8px; font-size:18px}
+    .box p{margin:0; color:var(--muted); line-height:1.9}
+    .box .line{height:1px; background: var(--line); margin:12px 0}
+    .branch-item{display:flex; justify-content:space-between; gap:10px; padding:10px 0; border-bottom:1px dashed rgba(255,255,255,.12); color:var(--muted)}
+    .branch-item:last-child{border-bottom:none}
+    .branch-item b{color:var(--text)}
+
+    footer{
+      border-top:1px solid var(--line);
+      padding:22px 0;
+      color: var(--muted);
+      text-align:center;
+    }
+
     @media (max-width: 900px){
       .grid{grid-template-columns: repeat(2, 1fr)}
+      .controls{grid-template-columns: 1fr 1fr; }
       .detail-grid{grid-template-columns:1fr}
-      .controls{grid-template-columns:1fr}
     }
     @media (max-width: 560px){
       .grid{grid-template-columns: 1fr}
       nav ul{display:none}
+      .controls{grid-template-columns:1fr}
     }
   </style>
 </head>
 
 <body>
+
 <header>
   <div class="container">
     <div class="nav">
@@ -109,75 +326,128 @@
         <div class="logo">ن</div>
         <div>
           <div style="font-size:14px; font-weight:900;">النور للاستثمار العقارية</div>
-          <div style="font-size:12px; color:var(--muted);">العروض يتم تعديلها من ملف data.txt</div>
+          <div style="font-size:12px; color:var(--muted);">إيجارات • للبيع • عروض محدثة</div>
         </div>
       </div>
 
       <nav>
         <ul>
-          <li><a class="chip" href="#rentals">الإيجارات</a></li>
-          <li><a class="chip" href="#sale">بيوت للبيع</a></li>
+          <li><a class="chip" href="#market">العقارات</a></li>
+          <li><a class="chip" href="#about">من نحن</a></li>
+          <li><a class="chip" href="#branches">فروعنا</a></li>
         </ul>
       </nav>
 
-      <div class="cta">
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+        <button class="btn secondary" id="btnAll">عرض الكل</button>
         <a class="btn" id="whatsTop" target="_blank" rel="noreferrer">واتساب الآن</a>
       </div>
     </div>
   </div>
 </header>
 
-<section class="hero">
+<!-- صفحة العقارات: عقارات + تفاصيلها فقط -->
+<section class="hero" id="market">
   <div class="container">
-    <div class="hero-card">
-      <h1>عقارات النور — بحث سريع وتفاصيل واضحة</h1>
-      <p>للتعديل: افتح ملف <b>data.txt</b> فقط وغيّر النصوص.</p>
+    <div class="glass hero-card">
+      <h1>عقارات النور</h1>
+      <p>ابحث واختر العرض المناسب — التفاصيل تظهر عند الضغط على “التفاصيل”.</p>
 
       <div class="controls">
-        <input class="input" id="q" placeholder="ابحث: شقة / بيت / مدينة..." />
+        <input class="input" id="q" placeholder="ابحث: شقة / بيت / مكتب / مدينة..." />
         <select class="input" id="city"><option value="">كل المدن</option></select>
         <select class="input" id="sort">
           <option value="new">الترتيب: الأحدث</option>
           <option value="priceAsc">السعر: الأقل</option>
           <option value="priceDesc">السعر: الأعلى</option>
+          <option value="areaDesc">المساحة: الأكبر</option>
         </select>
+        <div style="display:flex; gap:10px; justify-content:end">
+          <span class="chip active" data-tab="rent">الإيجارات</span>
+          <span class="chip" data-tab="sale">للبيع</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="rentals">
+<!-- الإيجارات -->
+<section id="rentals">
   <div class="container">
     <div class="section-title">
-      <div><h2>قسم الإيجارات</h2><small>شقق • بيوت • مكاتب • محلات</small></div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <div>
+        <h2>الإيجارات</h2>
+        <small>شقق • بيوت • مكاتب • متاجر</small>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
         <span class="chip active" data-rent="all">الكل</span>
         <span class="chip" data-rent="apartment">شقق</span>
         <span class="chip" data-rent="house">بيوت</span>
         <span class="chip" data-rent="office">مكاتب</span>
-        <span class="chip" data-rent="shop">محلات</span>
+        <span class="chip" data-rent="shop">متاجر</span>
       </div>
     </div>
     <div class="grid" id="rentGrid"></div>
   </div>
 </section>
 
-<section class="section" id="sale">
+<!-- للبيع (شقق + بيوت + متاجر) -->
+<section id="for-sale">
   <div class="container">
     <div class="section-title">
-      <div><h2>بيوت للبيع</h2><small>عروض بيع</small></div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <div>
+        <h2>للبيع</h2>
+        <small>شقق • بيوت • متاجر</small>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
         <span class="chip active" data-sale="all">الكل</span>
+        <span class="chip" data-sale="apartment">شقق</span>
         <span class="chip" data-sale="house">بيوت</span>
+        <span class="chip" data-sale="shop">متاجر</span>
       </div>
     </div>
     <div class="grid" id="saleGrid"></div>
   </div>
 </section>
 
+<!-- من نحن: خانة لوحدها -->
+<section id="about">
+  <div class="container">
+    <div class="glass box">
+      <h2>من نحن</h2>
+      <p>
+        النور للاستثمار العقارية جهة متخصصة في توفير أفضل الفرص العقارية (إيجار/بيع)،
+        مع التزام بالمصداقية والشفافية. هدفنا تقديم عروض واضحة بتفاصيل كاملة وتواصل سريع عبر واتساب.
+      </p>
+      <div class="line"></div>
+      <p>✔️ عروض مرتبة وواضحة &nbsp;&nbsp; ✔️ خدمة سريعة &nbsp;&nbsp; ✔️ مناسب للمستثمر والعائلة</p>
+    </div>
+  </div>
+</section>
+
+<!-- فروعنا: خانة لوحدها -->
+<section id="branches">
+  <div class="container">
+    <div class="glass box">
+      <h2>فروعنا</h2>
+
+      <div class="branch-item"><span>📍 بغداد</span><b>المنصور – شارع رئيسي</b></div>
+      <div class="branch-item"><span>📍 أربيل</span><b>عينكاوة – قرب المجمعات</b></div>
+      <div class="branch-item"><span>📍 البصرة</span><b>العشار – شارع تجاري</b></div>
+
+      <div class="line"></div>
+      <p>🕘 أوقات العمل: 9 صباحاً – 9 مساءً</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> النور للاستثمار العقارية — جميع الحقوق محفوظة
+</footer>
+
 <!-- Modal -->
 <div class="overlay" id="overlay" role="dialog" aria-modal="true">
-  <div class="modal">
+  <div class="glass modal">
     <div class="modal-head">
       <b id="mTitle">تفاصيل العقار</b>
       <button class="close" id="mClose">إغلاق</button>
@@ -196,7 +466,7 @@
             <button class="btn secondary" id="mCopy">نسخ التفاصيل</button>
           </div>
           <div style="color:var(--muted); font-size:12.5px; margin-top:10px; line-height:1.8;">
-            التعديل يتم من ملف data.txt (سهل جداً).
+            التعديل يتم من ملف data.txt فقط.
           </div>
         </div>
       </div>
@@ -206,9 +476,9 @@
 
 <script>
   // ==================== إعدادات بسيطة ====================
-  const WHATSAPP_NUMBER = "9640000000000";
+  const WHATSAPP_NUMBER = "9640000000000"; // غيّر رقمك هنا
   const CURRENCY = "د.ع";
-  const DATA_FILE = "data.txt"; // نفس اسم الملف
+  const DATA_FILE = "data.txt";
   // =======================================================
 
   const $ = (s)=>document.querySelector(s);
@@ -217,6 +487,7 @@
   const rentGrid = $("#rentGrid");
   const saleGrid = $("#saleGrid");
   const q = $("#q"), city = $("#city"), sort = $("#sort");
+  const btnAll = $("#btnAll");
 
   const overlay = $("#overlay");
   const mClose = $("#mClose");
@@ -230,11 +501,15 @@
   const mCopy = $("#mCopy");
   const bigThumb = $("#bigThumb");
 
-  $("#whatsTop").href = makeWhatsLink("مرحباً، أريد الاستفسار عن عقارات النور للاستثمار العقارية.");
+  $("#year").textContent = new Date().getFullYear();
+
+  const whatsTop = $("#whatsTop");
+  whatsTop.href = makeWhatsLink("مرحباً، أريد الاستفسار عن عقارات النور للاستثمار العقارية.");
 
   let listings = [];
   let rentFilter = "all";
   let saleFilter = "all";
+  let activeTab = "rent"; // rent | sale
 
   function makeWhatsLink(text){
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
@@ -248,12 +523,14 @@
     v = (v||"").toString().trim();
     return (v.includes("للبيع") || v.toLowerCase()==="sale") ? "sale" : "rent";
   }
+
+  // يدعم "متجر" و "محل" معاً
   function normalizeCat(v){
     v = (v||"").toString().trim();
     if(v.includes("شقة") || v.toLowerCase()==="apartment") return "apartment";
     if(v.includes("بيت") || v.toLowerCase()==="house") return "house";
     if(v.includes("مكتب") || v.toLowerCase()==="office") return "office";
-    if(v.includes("محل") || v.toLowerCase()==="shop") return "shop";
+    if(v.includes("متجر") || v.includes("محل") || v.toLowerCase()==="shop") return "shop";
     return "apartment";
   }
 
@@ -262,17 +539,24 @@
       if(item.cat==="apartment") return "إيجار - شقة";
       if(item.cat==="house") return "إيجار - بيت";
       if(item.cat==="office") return "إيجار - مكتب";
-      if(item.cat==="shop") return "إيجار - محل";
+      if(item.cat==="shop") return "إيجار - متجر";
       return "إيجار";
     }
-    return "بيع - بيت";
+    // sale
+    if(item.cat==="apartment") return "بيع - شقة";
+    if(item.cat==="house") return "بيع - بيت";
+    if(item.cat==="shop") return "بيع - متجر";
+    return "للبيع";
   }
+
   function badgeLabel(item){ return item.kind==="sale" ? "للبيع" : "إيجار"; }
 
   function buildCard(item){
     const el = document.createElement("div");
     el.className = "card";
-    const bg = item.image ? `style="background-image:url('${item.image}'); background-size:cover; background-position:center;"` : "";
+    const bg = item.image
+      ? `style="background-image:url('${item.image}'); background-size:cover; background-position:center;"`
+      : "";
     el.innerHTML = `
       <div class="thumb" ${bg}>
         <span class="badge">${badgeLabel(item)} • ${item.city || ""}</span>
@@ -280,7 +564,7 @@
       <div class="content">
         <p class="title">${item.title || ""}</p>
         <div class="meta">
-          <span>القسم: ${typeLabel(item)}</span>
+          <span>${typeLabel(item)}</span>
           <span>المساحة: ${item.area || 0} م²</span>
         </div>
         <div class="price">
@@ -312,6 +596,7 @@
     items = items.slice().sort((a,b)=>{
       if(s==="priceAsc") return a.price - b.price;
       if(s==="priceDesc") return b.price - a.price;
+      if(s==="areaDesc") return b.area - a.area;
       return b.id - a.id;
     });
     return items;
@@ -319,8 +604,13 @@
 
   function render(){
     const items = getFiltered();
+
+    // تبويب أعلى (إيجارات/للبيع)
+    $("#rentals").style.display = (activeTab === "rent") ? "" : "none";
+    $("#for-sale").style.display = (activeTab === "sale") ? "" : "none";
+
     let rentItems = items.filter(x=>x.kind==="rent");
-    let saleItems = items.filter(x=>x.kind==="sale");
+    let saleItems = items.filter(x=>x.kind==="sale"); // ✅ للبيع يشمل شقق + بيوت + متاجر
 
     if(rentFilter!=="all") rentItems = rentItems.filter(x=>x.cat===rentFilter);
     if(saleFilter!=="all") saleItems = saleItems.filter(x=>x.cat===saleFilter);
@@ -338,6 +628,7 @@
   function setActiveChips(){
     $$('[data-rent]').forEach(ch=>ch.classList.toggle("active", ch.dataset.rent===rentFilter));
     $$('[data-sale]').forEach(ch=>ch.classList.toggle("active", ch.dataset.sale===saleFilter));
+    $$('[data-tab]').forEach(ch=>ch.classList.toggle("active", ch.dataset.tab===activeTab));
   }
 
   function openModal(id){
@@ -378,7 +669,7 @@
   }
   function closeModal(){ overlay.style.display = "none"; }
 
-  // ===================== قراءة data.txt =====================
+  // ======= قراءة data.txt =======
   function parseDataText(txt){
     const lines = txt.split(/\r?\n/);
     const items = [];
@@ -386,8 +677,7 @@
 
     function commit(){
       if(!cur) return;
-      // إذا ما عنده عنوان، لا نضيفه
-      if(!cur.title) { cur=null; return; }
+      if(!cur.title){ cur=null; return; }
       cur.id = items.length + 1;
       cur.kind = normalizeKind(cur.kind);
       cur.cat = normalizeCat(cur.cat);
@@ -406,7 +696,6 @@
         cur = { kind:"ايجار", cat:"شقة", title:"", city:"", area:0, price:0, desc:"", image:"" };
         continue;
       }
-
       if(!cur) continue;
 
       const eq = line.indexOf("=");
@@ -434,6 +723,7 @@
       if(!res.ok) throw new Error("data.txt not found");
       const txt = await res.text();
       listings = parseDataText(txt);
+
       buildCityOptions();
       setActiveChips();
       render();
@@ -443,7 +733,6 @@
       saleGrid.innerHTML = `<div class="empty">تعذر تحميل ملف data.txt. تأكد أنه موجود بجانب index.html</div>`;
     }
   }
-  // ==========================================================
 
   // Events
   document.addEventListener("click", (e)=>{
@@ -455,14 +744,27 @@
 
     const sale = e.target.closest("[data-sale]");
     if(sale){ saleFilter = sale.dataset.sale; setActiveChips(); render(); }
+
+    const tab = e.target.closest("[data-tab]");
+    if(tab){ activeTab = tab.dataset.tab; setActiveChips(); render(); }
   });
+
   overlay.addEventListener("click", (e)=>{ if(e.target===overlay) closeModal(); });
   mClose.onclick = closeModal;
 
   [q, city, sort].forEach(el => el.addEventListener("input", ()=> render()));
 
+  btnAll.onclick = ()=>{
+    q.value = ""; city.value = ""; sort.value = "new";
+    rentFilter = "all"; saleFilter = "all"; activeTab = "rent";
+    setActiveChips();
+    render();
+    window.scrollTo({top:0, behavior:"smooth"});
+  };
+
   // تشغيل
   loadData();
 </script>
+
 </body>
 </html>
