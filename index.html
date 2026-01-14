@@ -452,7 +452,6 @@
         <small>اختيار مرحلتين: تجاري / سكني</small>
       </div>
 
-      <!-- المرحلة الأولى -->
       <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
         <span class="chip active" data-sale-main="all">الكل</span>
         <span class="chip" data-sale-main="commercial">تجاري</span>
@@ -460,16 +459,13 @@
       </div>
     </div>
 
-    <!-- المرحلة الثانية (تظهر حسب اختيار المرحلة الأولى) -->
     <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px;">
-      <!-- تجاري -->
       <div id="saleCommercialSub" style="display:none; gap:10px; flex-wrap:wrap; align-items:center;">
         <span class="chip active" data-sale-sub="all">الكل</span>
         <span class="chip" data-sale-sub="plot_com">قطعه تجاريه</span>
         <span class="chip" data-sale-sub="bldg_com">بنايه تجاريه</span>
       </div>
 
-      <!-- سكني -->
       <div id="saleResidentialSub" style="display:none; gap:10px; flex-wrap:wrap; align-items:center;">
         <span class="chip active" data-sale-sub="all">الكل</span>
         <span class="chip" data-sale-sub="plot_land">قطعه ارض</span>
@@ -501,10 +497,8 @@
   <div class="container">
     <div class="glass box">
       <h2>فروعنا</h2>
-
       <div class="branch-item"><span>الفرع الرئيسي</span><b>الحكيمية مجاور مطعم فلس</b></div>
       <div class="branch-item"><span>الفرع الثاني</span><b>كوت الحجاج قرب مطبعه البهاء</b></div>
-
       <div class="line"></div>
       <p>🕘 أوقات الدوام: 9 صباحاً الى الساعه 10 مسائا</p>
     </div>
@@ -524,7 +518,6 @@
     </div>
     <div class="modal-body">
       <div class="detail-grid">
-
         <div class="slider" id="slider" aria-label="صور الإعلان">
           <div class="slides" id="slides"></div>
           <button class="navBtn navPrev" id="prevBtn" aria-label="السابق">›</button>
@@ -533,16 +526,12 @@
         </div>
 
         <div class="detail">
-          <!-- ✅ رقم الإعلان أول شي -->
           <div class="k"><span>رقم الإعلان</span> <b id="mAdNo">—</b></div>
-
           <div class="k"><span>القسم</span> <b id="mType">—</b></div>
           <div class="k"><span>المنطقة</span> <b id="mRegion">—</b></div>
           <div class="k"><span>المساحة</span> <b id="mArea">—</b></div>
           <div class="k"><span>السعر</span> <b id="mPrice">—</b></div>
-
           <div class="k"><span>الوصف</span> <b id="mDesc">—</b></div>
-          <!-- ✅ وصف دقيق -->
           <div class="k"><span>وصف دقيق</span> <b id="mPrecise">—</b></div>
 
           <div class="actions">
@@ -554,7 +543,6 @@
             التعديل يتم: فولدر إعلان + info.txt + صور + تحديث list.txt
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -562,11 +550,12 @@
 
 <script>
   // ==================== إعدادات ====================
-  const WHATSAPP_NUMBER = "9647706060762"; // ✅ 07706060762 بصيغة دولية
+  const WHATSAPP_NUMBER = "9647706060762"; // 07706060762 بصيغة دولية
   const CURRENCY = "د.ع";
 
   const LIST_FILE = "list.txt";
   const INFO_FILE_NAME = "info.txt";
+  const MAX_IMAGES = 20; // ✅ حد أقصى للصور
   // ===============================================
 
   const $ = (s)=>document.querySelector(s);
@@ -579,7 +568,6 @@
 
   const overlay = $("#overlay");
   const mClose = $("#mClose");
-  const mTitle = $("#mTitle");
   const mAdNo = $("#mAdNo");
   const mType = $("#mType");
   const mRegion = $("#mRegion");
@@ -601,8 +589,7 @@
 
   $("#year").textContent = new Date().getFullYear();
 
-  const whatsTop = $("#whatsTop");
-  whatsTop.href = makeWhatsLink("مرحباً، أريد الاستفسار عن إعلانات شركة النور العقاريه.");
+  $("#whatsTop").href = makeWhatsLink("مرحباً، أريد الاستفسار عن إعلانات شركة النور العقاريه.");
 
   let listings = [];
   let rentFilter = "all";
@@ -619,14 +606,14 @@
   let touchDeltaX = 0;
   let isDragging = false;
 
-  // مناطق البصرة (قائمة جاهزة مبنية على أشهر الأحياء/المناطق المذكورة في ويكيبيديا) :contentReference[oaicite:1]{index=1}
+  // قائمة مناطق البصرة (ممكن تضيف/تحذف براحتك)
   const BASRA_AREAS = [
     "الحكيمية","العشار","مناوي باشا","مناوي لجم","العباسية","التحسينية","كوت الحجاج",
     "المعقل","خمسة ميل","بريهة","حي الجمهورية","حي الجزائر","دور النفط","كرمة علي",
-    "حي الخضراء","حي الكفاءات","حي الرسالة","البكر والأحرار","البراضعية",
-    "الجنينة","التميمية","الطويسة","القبلة","النجيبية","الموفقية","الأصمعي القديم",
-    "الأصمعي الجديد","حي الخليج العربي","الحيانية","حي الحسين","الجمعيات",
-    "أبو الخصيب","شط العرب","الزبير","القرنة","الفاو","المدينة"
+    "حي الخضراء","حي الكفاءات","حي الرسالة","البراضعية","الجنينة","التميمية",
+    "الطويسة","القبلة","النجيبية","الموفقية","الأصمعي القديم","الأصمعي الجديد",
+    "حي الخليج العربي","الحيانية","حي الحسين","الجمعيات","أبو الخصيب","شط العرب",
+    "الزبير","القرنة","الفاو","المدينة"
   ];
 
   function makeWhatsLink(text){
@@ -661,10 +648,8 @@
   }
   function normalizeSaleSub(v){
     v = (v||"").toString().trim();
-    // تجاري
     if(v.includes("قطعه") && v.includes("تجاري")) return "plot_com";
     if((v.includes("بناية")||v.includes("مبنى")) && v.includes("تجاري")) return "bldg_com";
-    // سكني
     if(v.includes("قطعه") && (v.includes("ارض") || v.includes("أرض"))) return "plot_land";
     if(v.includes("بيت")) return "house_sale";
     return "";
@@ -680,7 +665,6 @@
       if(item.rentType==="shop") return "تأجير - محل تجاري";
       return "تأجير";
     }
-    // sale
     if(item.saleMain==="commercial"){
       if(item.saleSub==="plot_com") return "بيع - قطعه تجاريه";
       if(item.saleSub==="bldg_com") return "بيع - بنايه تجاريه";
@@ -721,11 +705,9 @@
   }
 
   function buildRegionOptions(){
-    // نعرض قائمة البصرة جاهزة + أي مناطق إضافية موجودة بالإعلانات
     const fromListings = listings.map(x=>x.region).filter(Boolean);
     const set = new Set([...BASRA_AREAS, ...fromListings]);
     const regions = Array.from(set);
-
     regionSel.innerHTML = `<option value="">كل مناطق البصرة</option>` +
       regions.map(r=>`<option>${r}</option>`).join("");
   }
@@ -755,11 +737,9 @@
     saleCommercialSub.style.display = (saleMain==="commercial") ? "flex" : "none";
     saleResidentialSub.style.display = (saleMain==="residential") ? "flex" : "none";
 
-    // لما يبدّل main نخلي sub على all
     if(saleMain==="commercial" || saleMain==="residential"){
       saleSub = "all";
       $$('[data-sale-sub]').forEach(ch=>ch.classList.remove("active"));
-      // فعّل "الكل" داخل القسم الظاهر
       const visible = (saleMain==="commercial") ? saleCommercialSub : saleResidentialSub;
       const firstAll = visible.querySelector('[data-sale-sub="all"]');
       if(firstAll) firstAll.classList.add("active");
@@ -781,7 +761,6 @@
 
     if(rentFilter!=="all") rentItems = rentItems.filter(x=>x.rentType===rentFilter);
 
-    // البيع: فلترة المرحلة الأولى + الثانية
     if(saleMain!=="all") saleItems = saleItems.filter(x=>x.saleMain===saleMain);
     if(saleSub!=="all") saleItems = saleItems.filter(x=>x.saleSub===saleSub);
 
@@ -793,12 +772,6 @@
 
     if(saleItems.length===0) saleGrid.innerHTML = `<div class="empty">لا توجد إعلانات بيع ضمن هذا الفلتر.</div>`;
     else saleItems.forEach(it=>saleGrid.appendChild(buildCard(it)));
-  }
-
-  function setActiveChips(){
-    $$('[data-rent]').forEach(ch=>ch.classList.toggle("active", ch.dataset.rent===rentFilter));
-    $$('[data-tab]').forEach(ch=>ch.classList.toggle("active", ch.dataset.tab===activeTab));
-    $$('[data-sale-main]').forEach(ch=>ch.classList.toggle("active", ch.dataset.saleMain===saleMain));
   }
 
   // ===== Slider =====
@@ -887,9 +860,7 @@
     const it = listings.find(x=>x.id===id);
     if(!it) return;
 
-    mTitle.textContent = "تفاصيل الإعلان";
     mAdNo.textContent = it.adNo || String(it.id);
-
     mType.textContent = typeLabel(it);
     mRegion.textContent = it.region || "—";
     mArea.textContent = (it.area || 0) + " م²";
@@ -923,7 +894,7 @@
   overlay.addEventListener("click", (e)=>{ if(e.target===overlay) closeModal(); });
   mClose.onclick = closeModal;
 
-  // ===== Data loading (list.txt + ads/*/info.txt) =====
+  // ===== Data loading =====
   async function fetchText(path){
     const res = await fetch(path, { cache: "no-store" });
     if(!res.ok) throw new Error("not found: " + path);
@@ -932,6 +903,37 @@
 
   function parseList(txt){
     return txt.split(/\r?\n/).map(l=>l.trim()).filter(l=>l && !l.startsWith("#"));
+  }
+
+  // ✅ دالة جديدة قوية: تقبل فواصل عربية/إنجليزية/مسافات/أسطر متعددة + حد 20
+  function parseImagesValue(imagesText){
+    if(!imagesText) return [];
+
+    // اجمع كل شيء في نص واحد
+    const t = String(imagesText)
+      .replace(/\r/g, "\n")
+      .replace(/[،؛]/g, ",")     // فاصلة عربية/فاصلة منقوطة عربية → ,
+      .replace(/[;|]/g, ",")     // ; أو | → ,
+      .replace(/\t+/g, " ")
+      .replace(/\n+/g, ",");     // لو المستخدم كتبها على سطور
+
+    // لو ماكو فواصل أصلاً وبيها مسافات، نخلي المسافة فاصل أيضاً
+    const normalized = t.includes(",") ? t : t.replace(/\s+/g, ",");
+
+    return normalized
+      .split(",")
+      .map(s => s.trim())
+      .filter(Boolean)
+      .filter(name => !name.startsWith("#"))
+      .slice(0, MAX_IMAGES);
+  }
+
+  function buildImages(folder, imagesText){
+    const base = folder.replace(/\/$/, "");
+    const names = parseImagesValue(imagesText);
+
+    // مسارات كاملة للصور
+    return names.map(name => `${base}/${name}`);
   }
 
   function parseInfoText(txt){
@@ -944,12 +946,9 @@
       price:0,
       desc:"",
       precise:"",
-      imagesRaw:"",
+      imagesText:"",  // ✅ نجمع كل قيم الصور هنا حتى لو تكررت
 
-      // rent
       rentType:"",
-
-      // sale
       saleMain:"",
       saleSub:"",
       saleMainRaw:"",
@@ -968,9 +967,7 @@
       if(key === "القسم") obj.kind = val;
       else if(key === "العنوان") obj.title = val;
 
-      // ✅ بدل المدينة صار "المنطقة"
       else if(key === "المنطقة") obj.region = val;
-      // احتياط: لو أحد كاتب مدينة
       else if(key === "المدينة" && !obj.region) obj.region = val;
 
       else if(key === "المساحة") obj.area = val;
@@ -978,20 +975,19 @@
 
       else if(key === "الوصف") obj.desc = val;
 
-      // ✅ وصف دقيق
       else if(key === "وصف_دقيق" || key === "الوصف_الدقيق") obj.precise = val;
 
-      // ✅ صور متعددة
-      else if(key === "الصور") obj.imagesRaw = val;
+      // ✅ الصور: نجمعها حتى لو مكتوبة أكثر من مرة
+      else if(key === "الصور" || key === "صور"){
+        // نجمع بالقيمة مع فاصلة
+        obj.imagesText = obj.imagesText ? (obj.imagesText + "," + val) : val;
+      }
 
-      // نوع (يستخدم للإيجار أو للبيع بحسب القسم)
       else if(key === "النوع"){
-        // نخليها خام وبعدين نطبعها حسب القسم
         obj.saleSubRaw = val;
         obj.rentType = val;
       }
 
-      // للبيع: التصنيف = تجاري/سكني
       else if(key === "التصنيف"){
         obj.saleMainRaw = val;
       }
@@ -1005,11 +1001,9 @@
     if(obj.kind === "rent"){
       obj.rentType = normalizeRentType(obj.rentType);
     } else {
-      // sale
       obj.saleMain = normalizeSaleMain(obj.saleMainRaw);
       obj.saleSub  = normalizeSaleSub(obj.saleSubRaw);
 
-      // لو المستخدم ما كتب "التصنيف" نخمّن من النوع
       if(!obj.saleMain){
         if(obj.saleSub === "plot_com" || obj.saleSub === "bldg_com") obj.saleMain = "commercial";
         if(obj.saleSub === "plot_land" || obj.saleSub === "house_sale") obj.saleMain = "residential";
@@ -1017,13 +1011,6 @@
     }
 
     return obj;
-  }
-
-  function buildImages(folder, imagesRaw){
-    if(!imagesRaw) return [];
-    const files = imagesRaw.split(",").map(s=>s.trim()).filter(Boolean);
-    const base = folder.replace(/\/$/,"");
-    return files.map(f => base + "/" + f);
   }
 
   function folderBasename(path){
@@ -1049,22 +1036,19 @@
           results.push({
             id: results.length + 1,
             folder,
-            adNo: folderBasename(folder), // ✅ رقم الإعلان من اسم الفولدر
-            kind: info.kind,
+            adNo: folderBasename(folder),
 
-            // common
+            kind: info.kind,
             title: info.title,
             region: info.region,
             area: info.area,
             price: info.price,
             desc: info.desc,
             precise: info.precise,
-            images: buildImages(folder, info.imagesRaw),
 
-            // rent
+            images: buildImages(folder, info.imagesText),
+
             rentType: info.rentType,
-
-            // sale
             saleMain: info.saleMain,
             saleSub: info.saleSub,
           });
@@ -1074,9 +1058,7 @@
       }
 
       listings = results;
-
       buildRegionOptions();
-      setActiveChips();
       updateSaleSubVisibility();
       render();
     }catch(e){
@@ -1101,8 +1083,7 @@
     const tab = e.target.closest("[data-tab]");
     if(tab){
       activeTab = tab.dataset.tab;
-      setActiveChips();
-      // لما يدخل بيع نجهز sub
+      $$('[data-tab]').forEach(ch=>ch.classList.toggle("active", ch.dataset.tab===activeTab));
       if(activeTab==="sale") updateSaleSubVisibility();
       render();
     }
@@ -1110,7 +1091,7 @@
     const saleM = e.target.closest("[data-sale-main]");
     if(saleM){
       saleMain = saleM.dataset.saleMain;
-      setActiveChips();
+      $$('[data-sale-main]').forEach(ch=>ch.classList.toggle("active", ch.dataset.saleMain===saleMain));
       updateSaleSubVisibility();
       render();
     }
@@ -1118,8 +1099,6 @@
     const saleS = e.target.closest("[data-sale-sub]");
     if(saleS){
       saleSub = saleS.dataset.saleSub;
-
-      // فعّل active داخل المجموعة الظاهرة فقط
       const parent = saleS.closest("#saleCommercialSub") || saleS.closest("#saleResidentialSub");
       if(parent){
         parent.querySelectorAll("[data-sale-sub]").forEach(ch=>ch.classList.remove("active"));
@@ -1137,7 +1116,11 @@
     saleMain = "all";
     saleSub = "all";
     activeTab = "rent";
-    setActiveChips();
+
+    $$('[data-rent]').forEach(ch=>ch.classList.toggle("active", ch.dataset.rent==="all"));
+    $$('[data-tab]').forEach(ch=>ch.classList.toggle("active", ch.dataset.tab==="rent"));
+    $$('[data-sale-main]').forEach(ch=>ch.classList.toggle("active", ch.dataset.saleMain==="all"));
+
     updateSaleSubVisibility();
     render();
     window.scrollTo({top:0, behavior:"smooth"});
