@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لوحة التحكم</title>
+  <meta name="description" content="لوحة تحكم احترافية لإدارة المنشورات والاعدادات" />
+
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --ink:#0f172a;
+      --ink-2:#1e293b;
+      --muted:#6b7280;
+      --line:rgba(15,23,42,.08);
+      --brand:#0ea5e9;
+      --brand-2:#22d3ee;
+      --accent:#f59e0b;
+      --paper:#f8fafc;
+      --card:#ffffff;
+      --shadow:0 22px 60px rgba(15,23,42,.14);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Tajawal", system-ui, sans-serif;
+      background:
+        radial-gradient(800px 480px at 85% -10%, rgba(14,165,233,.18), transparent 60%),
+        radial-gradient(700px 420px at 5% 20%, rgba(245,158,11,.12), transparent 60%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+      color:var(--ink);
+      min-height:100vh;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-20%;
+      background:
+        radial-gradient(500px 260px at 20% 80%, rgba(34,211,238,.12), transparent 60%),
+        radial-gradient(560px 300px at 70% 60%, rgba(14,165,233,.10), transparent 60%);
+      filter: blur(10px);
+      z-index:-1;
+    }
+
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1200px; margin:0 auto; padding:0 18px}
+
+    header{
+      position:sticky; top:0; z-index:20;
+      background: rgba(248,250,252,.8);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:14px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      font-family:"El Messiri", serif; font-weight:700; font-size:20px;
+    }
+    .logo{
+      width:44px; height:44px; border-radius:14px;
+      display:grid; place-items:center;
+      background:linear-gradient(135deg, var(--brand), var(--brand-2));
+      color:#0f172a; font-weight:800;
+      box-shadow:0 12px 30px rgba(14,165,233,.18);
+    }
+    .nav-actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+
+    .btn{
+      border:none; cursor:pointer;
+      padding:10px 14px; border-radius:14px;
+      background:linear-gradient(135deg, var(--brand), var(--brand-2));
+      color:#0f172a; font-weight:800;
+      transition:.18s ease;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn.ghost{
+      background:transparent; border:1px solid var(--line); color:var(--ink-2);
+    }
+    .btn.warning{background:linear-gradient(135deg, #fbbf24, #f97316)}
+    .btn.danger{background:linear-gradient(135deg, #f87171, #ef4444); color:#fff}
+
+    .page-title{
+      margin:18px 0 10px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .page-title h1{
+      margin:0; font-family:"El Messiri", serif; font-size:28px;
+    }
+    .muted{color:var(--muted); font-size:13px}
+
+    .grid{
+      display:grid; gap:16px;
+      grid-template-columns: 1.1fr .9fr;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+    .card h2{margin:0 0 6px; font-size:18px}
+    .card p{margin:0; color:var(--muted)}
+
+    .form-grid{
+      display:grid; gap:12px; margin-top:14px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .field{display:flex; flex-direction:column; gap:6px}
+    .field label{font-weight:700; font-size:13px}
+    .field input, .field select, .field textarea{
+      padding:11px; border-radius:12px; border:1px solid var(--line);
+      background:#fff; outline:none; font-family:inherit; font-size:14px;
+    }
+    .field textarea{min-height:90px; resize:vertical}
+    .full{grid-column:1/-1}
+
+    .filters{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:10px 0 6px;
+    }
+
+    .table{
+      display:grid; gap:10px; margin-top:10px;
+    }
+    .post{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      display:grid; gap:10px;
+      background:linear-gradient(180deg, #fff, #f8fafc);
+    }
+    .post-head{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap}
+    .post-title{font-weight:800}
+    .post-meta{color:var(--muted); font-size:12.5px}
+    .post-actions{display:flex; gap:8px; flex-wrap:wrap}
+
+    .tag{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:12px; background:#eef2ff; color:#1e1b4b; border:1px solid rgba(15,23,42,.08)}
+
+    .status{
+      margin-top:10px; padding:10px 12px; border-radius:12px; background:#f8fafc; border:1px dashed var(--line); color:var(--muted)
+    }
+
+    .gate{
+      position:fixed; inset:0; background:rgba(15,23,42,.6);
+      display:flex; align-items:center; justify-content:center; padding:18px; z-index:50;
+    }
+    .gate-card{
+      width:min(420px, 100%);
+      background:#fff; border-radius:20px; padding:20px; box-shadow:var(--shadow);
+    }
+
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+      .form-grid{grid-template-columns:1fr}
+      .nav{flex-direction:column; align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <div class="logo">ن</div>
+          لوحة التحكم
+        </div>
+        <div class="nav-actions">
+          <button class="btn ghost" id="connectBtn">ربط مجلد الموقع</button>
+          <a class="btn ghost" href="./setting/">الاعدادات</a>
+          <button class="btn warning" id="logoutBtn">تسجيل خروج</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-title">
+      <div>
+        <h1>ادارة المنشورات</h1>
+        <div class="muted">اضف اعلان جديد، عدل القائم، واحذف بسهولة.</div>
+      </div>
+      <div class="muted" id="rootStatus">غير مرتبط بالمجلد</div>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2>اضافة او تعديل منشور</h2>
+        <p>اختار القسم، اضف التفاصيل، وارفع الصور.</p>
+
+        <form id="postForm" class="form-grid">
+          <div class="field">
+            <label>نوع العرض</label>
+            <select id="kind">
+              <option value="rent">ايجار</option>
+              <option value="sale">للبيع</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>القسم</label>
+            <select id="saleMain" disabled>
+              <option value="commercial">تجاري</option>
+              <option value="residential">سكني</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>تصنيف الفرعي</label>
+            <select id="saleSub" disabled>
+              <option value="plot_com">قطعة تجارية</option>
+              <option value="bldg_com">عمارة تجارية</option>
+              <option value="plot_land">قطعة ارض</option>
+              <option value="house_sale">بيت للبيع</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>نوع الايجار</label>
+            <select id="rentType">
+              <option value="apt">شقة</option>
+              <option value="home">بيت</option>
+              <option value="building">عمارة</option>
+              <option value="shop">محل تجاري</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>العنوان</label>
+            <input id="title" required />
+          </div>
+          <div class="field">
+            <label>المنطقة</label>
+            <input id="region" required />
+          </div>
+          <div class="field">
+            <label>المساحة</label>
+            <input id="area" type="number" min="0" />
+          </div>
+          <div class="field">
+            <label>السعر</label>
+            <input id="price" type="number" min="0" />
+          </div>
+          <div class="field full">
+            <label>الوصف</label>
+            <textarea id="desc"></textarea>
+          </div>
+          <div class="field full">
+            <label>وصف دقيق / ملاحظات</label>
+            <textarea id="precise"></textarea>
+          </div>
+          <div class="field full">
+            <label>الصور (اختر اكثر من صورة)</label>
+            <input id="images" type="file" multiple accept="image/*" />
+            <div class="muted" id="currentImages"></div>
+          </div>
+
+          <div class="full" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:6px;">
+            <button class="btn" type="submit" id="saveBtn">حفظ المنشور ونشره</button>
+            <button class="btn ghost" type="button" id="resetBtn">الغاء التعديل</button>
+          </div>
+        </form>
+        <div class="status" id="formStatus">جاهز للعمل.</div>
+      </section>
+
+      <section class="card">
+        <h2>المنشورات المنشورة</h2>
+        <p>ابحث او فلتر حسب القسم.</p>
+
+        <div class="filters">
+          <input id="search" placeholder="بحث بالعنوان او المنطقة" />
+          <select id="filterKind">
+            <option value="">الكل</option>
+            <option value="rent">ايجار</option>
+            <option value="sale">للبيع</option>
+          </select>
+          <select id="filterType">
+            <option value="">كل الاقسام</option>
+          </select>
+          <button class="btn ghost" id="refreshBtn">تحديث</button>
+        </div>
+
+        <div class="table" id="postsList"></div>
+      </section>
+    </div>
+  </main>
+
+  <div class="gate" id="gate" style="display:none;">
+    <div class="gate-card">
+      <h3 style="margin:0 0 6px; font-family:'El Messiri', serif;">تسجيل دخول لوحة التحكم</h3>
+      <p class="muted">ادخل كلمة المرور المحفوظة في ملف الكونفق.</p>
+      <div class="field" style="margin-top:10px;">
+        <label>كلمة المرور</label>
+        <input id="passwordInput" type="password" />
+      </div>
+      <div style="display:flex; gap:10px; margin-top:12px;">
+        <button class="btn" id="loginBtn">دخول</button>
+      </div>
+      <div class="muted" id="loginStatus" style="margin-top:8px;"></div>
+    </div>
+  </div>
+
+  <script>
+    const CONFIG_PATH = "./config.json";
+    const LIST_PATH = "../list.txt";
+    const INFO_FILE = "info.txt";
+    const ADS_DIR = "ads";
+    const SESSION_KEY = "dashbord_auth";
+
+    const form = document.getElementById("postForm");
+    const saveBtn = document.getElementById("saveBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const formStatus = document.getElementById("formStatus");
+    const postsList = document.getElementById("postsList");
+    const searchInput = document.getElementById("search");
+    const filterKind = document.getElementById("filterKind");
+    const filterType = document.getElementById("filterType");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const connectBtn = document.getElementById("connectBtn");
+    const rootStatus = document.getElementById("rootStatus");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const gate = document.getElementById("gate");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginStatus = document.getElementById("loginStatus");
+    const passwordInput = document.getElementById("passwordInput");
+    const currentImages = document.getElementById("currentImages");
+
+    const kindEl = document.getElementById("kind");
+    const saleMainEl = document.getElementById("saleMain");
+    const saleSubEl = document.getElementById("saleSub");
+    const rentTypeEl = document.getElementById("rentType");
+    const titleEl = document.getElementById("title");
+    const regionEl = document.getElementById("region");
+    const areaEl = document.getElementById("area");
+    const priceEl = document.getElementById("price");
+    const descEl = document.getElementById("desc");
+    const preciseEl = document.getElementById("precise");
+    const imagesEl = document.getElementById("images");
+
+    let config = null;
+    let rootHandle = null;
+    let posts = [];
+    let editing = null;
+
+    const saleSubLabels = {
+      plot_com: "قطعة تجارية",
+      bldg_com: "عمارة تجارية",
+      plot_land: "قطعة ارض",
+      house_sale: "بيت للبيع"
+    };
+    const rentTypeLabels = {
+      apt: "شقة",
+      home: "بيت",
+      building: "عمارة",
+      shop: "محل تجاري"
+    };
+
+    function setStatus(msg){
+      formStatus.textContent = msg;
+    }
+
+    function normalizeKind(v){
+      v = (v || "").trim();
+      return v.includes("بيع") ? "sale" : "rent";
+    }
+    function normalizeRentType(v){
+      v = (v || "").trim();
+      if(v.includes("شقة") || v.includes("شقق")) return "apt";
+      if(v.includes("بيت") || v.includes("منزل")) return "home";
+      if(v.includes("عمارة") || v.includes("بناية")) return "building";
+      if(v.includes("محل") || v.includes("متجر")) return "shop";
+      return "apt";
+    }
+    function normalizeSaleMain(v){
+      v = (v || "").trim();
+      if(v.includes("تجاري")) return "commercial";
+      if(v.includes("سكن")) return "residential";
+      return "";
+    }
+    function normalizeSaleSub(v){
+      v = (v || "").trim();
+      if(v.includes("قطعة") && v.includes("تجارية")) return "plot_com";
+      if((v.includes("عمارة") || v.includes("بناية")) && v.includes("تجارية")) return "bldg_com";
+      if(v.includes("قطعة") && (v.includes("ارض") || v.includes("أرض"))) return "plot_land";
+      if(v.includes("بيت")) return "house_sale";
+      return "";
+    }
+
+    function typeLabel(item){
+      if(item.kind === "rent"){
+        return rentTypeLabels[item.rentType] || "ايجار";
+      }
+      if(item.saleMain === "commercial"){
+        return saleSubLabels[item.saleSub] || "تجاري";
+      }
+      if(item.saleMain === "residential"){
+        return saleSubLabels[item.saleSub] || "سكني";
+      }
+      return "للبيع";
+    }
+
+    function updateKindUI(){
+      const isSale = kindEl.value === "sale";
+      saleMainEl.disabled = !isSale;
+      saleSubEl.disabled = !isSale;
+      rentTypeEl.disabled = isSale;
+    }
+
+    function updateFilterTypeOptions(){
+      const kind = filterKind.value;
+      const options = ["<option value=\"\">كل الاقسام</option>"];
+      if(kind === "rent"){
+        Object.entries(rentTypeLabels).forEach(([k, label])=>{
+          options.push(`<option value=\"${k}\">${label}</option>`);
+        });
+      } else if(kind === "sale"){
+        options.push('<option value="commercial">تجاري</option>');
+        options.push('<option value="residential">سكني</option>');
+      }
+      filterType.innerHTML = options.join("");
+    }
+
+    async function loadConfig(){
+      try{
+        const res = await fetch(CONFIG_PATH, { cache: "no-store" });
+        if(!res.ok) return null;
+        return await res.json();
+      }catch(e){
+        return null;
+      }
+    }
+
+    function showGate(show){
+      gate.style.display = show ? "flex" : "none";
+    }
+
+    async function ensureAuth(){
+      config = await loadConfig();
+      const saved = sessionStorage.getItem(SESSION_KEY);
+      if(saved === "ok"){
+        showGate(false);
+        return true;
+      }
+      showGate(true);
+      return false;
+    }
+
+    async function connectRoot(){
+      if(!window.showDirectoryPicker){
+        alert("متصفحك لا يدعم ربط المجلد. استخدم كروم او ايدج.");
+        return;
+      }
+      try{
+        const handle = await window.showDirectoryPicker({ id: "site-root" });
+        const perm = await handle.requestPermission({ mode: "readwrite" });
+        if(perm !== "granted"){
+          alert("تم رفض الصلاحيات.");
+          return;
+        }
+        rootHandle = handle;
+        rootStatus.textContent = "تم ربط المجلد";
+      }catch(e){
+        console.warn(e);
+      }
+    }
+
+    async function readList(){
+      if(rootHandle){
+        const fileHandle = await rootHandle.getFileHandle("list.txt", { create: true });
+        const file = await fileHandle.getFile();
+        return await file.text();
+      }
+      const res = await fetch(LIST_PATH, { cache: "no-store" });
+      if(!res.ok) return "";
+      return await res.text();
+    }
+
+    function parseList(text){
+      return text.split(/\r?\n/).map(l=>l.trim()).filter(l=>l && !l.startsWith("#"));
+    }
+
+    async function readInfo(folder){
+      if(rootHandle){
+        const adsDir = await rootHandle.getDirectoryHandle(ADS_DIR, { create: true });
+        const dirName = folder.split("/").pop();
+        const adDir = await adsDir.getDirectoryHandle(dirName);
+        const infoHandle = await adDir.getFileHandle(INFO_FILE);
+        const file = await infoHandle.getFile();
+        return await file.text();
+      }
+      const res = await fetch(`../${folder}/${INFO_FILE}`, { cache: "no-store" });
+      if(!res.ok) return "";
+      return await res.text();
+    }
+
+    function parseInfo(text){
+      const obj = {
+        kindRaw: "",
+        title: "",
+        region: "",
+        area: 0,
+        price: 0,
+        desc: "",
+        precise: "",
+        imagesRaw: "",
+        saleMainRaw: "",
+        saleSubRaw: "",
+        rentTypeRaw: ""
+      };
+      for(const raw of text.split(/\r?\n/)){
+        const line = raw.trim();
+        if(!line || line.startsWith("#")) continue;
+        const idx = line.indexOf("=");
+        if(idx === -1) continue;
+        const key = line.slice(0, idx).trim();
+        const val = line.slice(idx + 1).trim();
+        if(key === "النوع") obj.kindRaw = val;
+        else if(key === "العنوان") obj.title = val;
+        else if(key === "المنطقة") obj.region = val;
+        else if(key === "الحي" && !obj.region) obj.region = val;
+        else if(key === "المساحة") obj.area = val;
+        else if(key === "السعر") obj.price = val;
+        else if(key === "الوصف") obj.desc = val;
+        else if(key === "وصف_دقيق" || key === "وصف_دقيق_نقطة") obj.precise = val;
+        else if(key === "الصور") obj.imagesRaw = val;
+        else if(key === "القسم") obj.saleMainRaw = val;
+        else if(key === "التصنيف") obj.saleSubRaw = val;
+      }
+      const kind = normalizeKind(obj.kindRaw);
+      return {
+        kind,
+        title: obj.title,
+        region: obj.region,
+        area: Number(obj.area) || 0,
+        price: Number(String(obj.price).replace(/[^\d.]/g, "")) || 0,
+        desc: obj.desc,
+        precise: obj.precise,
+        images: obj.imagesRaw ? obj.imagesRaw.split(",").map(s=>s.trim()).filter(Boolean) : [],
+        saleMain: normalizeSaleMain(obj.saleMainRaw),
+        saleSub: normalizeSaleSub(obj.saleSubRaw),
+        rentType: normalizeRentType(obj.saleSubRaw || obj.rentTypeRaw)
+      };
+    }
+
+    function folderBase(folder){
+      const parts = folder.split("/");
+      return parts[parts.length - 1];
+    }
+
+    async function loadPosts(){
+      try{
+        const listText = await readList();
+        const folders = parseList(listText);
+        const results = [];
+        for(const folder of folders){
+          const infoText = await readInfo(folder);
+          if(!infoText) continue;
+          const info = parseInfo(infoText);
+          results.push({
+            id: results.length + 1,
+            folder,
+            adNo: folderBase(folder),
+            ...info
+          });
+        }
+        posts = results;
+        renderPosts();
+      }catch(e){
+        console.warn(e);
+      }
+    }
+
+    function renderPosts(){
+      const term = (searchInput.value || "").toLowerCase();
+      const kind = filterKind.value;
+      const type = filterType.value;
+
+      let items = posts.filter(p=>{
+        const hay = `${p.title} ${p.region} ${p.desc}`.toLowerCase();
+        if(term && !hay.includes(term)) return false;
+        if(kind && p.kind !== kind) return false;
+        if(type){
+          if(kind === "rent" && p.rentType !== type) return false;
+          if(kind === "sale" && p.saleMain !== type) return false;
+        }
+        return true;
+      });
+
+      if(!items.length){
+        postsList.innerHTML = "<div class=\"status\">لا توجد منشورات مطابقة.</div>";
+        return;
+      }
+
+      postsList.innerHTML = items.map(p=>{
+        const tag = p.kind === "rent" ? "ايجار" : "للبيع";
+        return `
+          <div class=\"post\">
+            <div class=\"post-head\">
+              <div>
+                <div class=\"post-title\">${p.title}</div>
+                <div class=\"post-meta\">${p.region} • ${typeLabel(p)} • مساحة ${p.area} • سعر ${p.price}</div>
+              </div>
+              <span class=\"tag\">${tag}</span>
+            </div>
+            <div class=\"post-actions\">
+              <button class=\"btn ghost\" data-edit=\"${p.id}\">تعديل</button>
+              <button class=\"btn danger\" data-delete=\"${p.id}\">حذف</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function resetForm(){
+      editing = null;
+      form.reset();
+      currentImages.textContent = "";
+      updateKindUI();
+      saveBtn.textContent = "حفظ المنشور ونشره";
+    }
+
+    async function writeTextFile(handle, content){
+      const writable = await handle.createWritable();
+      await writable.write(content);
+      await writable.close();
+    }
+
+    function buildInfoText(){
+      const kindLabel = kindEl.value === "sale" ? "للبيع" : "ايجار";
+      const saleMainLabel = kindEl.value === "sale" ? (saleMainEl.value === "commercial" ? "تجاري" : "سكني") : "ايجار";
+      const subLabel = kindEl.value === "sale" ? saleSubLabels[saleSubEl.value] : rentTypeLabels[rentTypeEl.value];
+
+      return [
+        `القسم=${saleMainLabel}`,
+        `التصنيف=${subLabel}`,
+        `النوع=${kindLabel}`,
+        `العنوان=${titleEl.value.trim()}`,
+        `المنطقة=${regionEl.value.trim()}`,
+        `المساحة=${areaEl.value || 0}`,
+        `السعر=${priceEl.value || 0}`,
+        `الوصف=${descEl.value.trim()}`,
+        `وصف_دقيق=${preciseEl.value.trim()}`,
+        `الصور=__IMAGES__`
+      ].join("\n");
+    }
+
+    async function savePost(e){
+      e.preventDefault();
+      if(!rootHandle){
+        setStatus("يجب ربط مجلد الموقع اولا.");
+        return;
+      }
+
+      const adsDir = await rootHandle.getDirectoryHandle(ADS_DIR, { create: true });
+      const listHandle = await rootHandle.getFileHandle("list.txt", { create: true });
+
+      let folderName = editing ? editing.adNo : null;
+      if(!folderName){
+        const listText = await readList();
+        const folders = parseList(listText);
+        const nums = folders.map(f=>{
+          const name = f.split("/").pop();
+          const m = name.match(/ad-(\d+)/);
+          return m ? Number(m[1]) : 0;
+        });
+        const next = (Math.max(0, ...nums) + 1).toString().padStart(3, "0");
+        folderName = `ad-${next}`;
+      }
+
+      const adDir = await adsDir.getDirectoryHandle(folderName, { create: true });
+
+      let imagesList = editing ? editing.images.slice() : [];
+      if(imagesEl.files.length){
+        // remove old images
+        for(const img of imagesList){
+          try{ await adDir.removeEntry(img); }catch(e){ /* ignore */ }
+        }
+        imagesList = [];
+        for(let i = 0; i < imagesEl.files.length; i++){
+          const file = imagesEl.files[i];
+          const ext = file.name.split(".").pop().toLowerCase();
+          const name = `${i + 1}.${ext}`;
+          const handle = await adDir.getFileHandle(name, { create: true });
+          const writable = await handle.createWritable();
+          await writable.write(file);
+          await writable.close();
+          imagesList.push(name);
+        }
+      }
+
+      let infoText = buildInfoText();
+      infoText = infoText.replace("__IMAGES__", imagesList.join(","));
+
+      const infoHandle = await adDir.getFileHandle(INFO_FILE, { create: true });
+      await writeTextFile(infoHandle, infoText);
+
+      const listText = await readList();
+      let folders = parseList(listText);
+      const entry = `${ADS_DIR}/${folderName}`;
+      if(!folders.includes(entry)){
+        folders.push(entry);
+      }
+      await writeTextFile(listHandle, folders.join("\n"));
+
+      setStatus(editing ? "تم تحديث المنشور بنجاح." : "تم نشر المنشور بنجاح.");
+      imagesEl.value = "";
+      await loadPosts();
+      resetForm();
+    }
+
+    function handleEdit(id){
+      const item = posts.find(p=>p.id === id);
+      if(!item) return;
+      editing = item;
+      kindEl.value = item.kind;
+      saleMainEl.value = item.saleMain || "commercial";
+      saleSubEl.value = item.saleSub || "plot_com";
+      rentTypeEl.value = item.rentType || "apt";
+      titleEl.value = item.title || "";
+      regionEl.value = item.region || "";
+      areaEl.value = item.area || "";
+      priceEl.value = item.price || "";
+      descEl.value = item.desc || "";
+      preciseEl.value = item.precise || "";
+      currentImages.textContent = item.images.length ? `الصور الحالية: ${item.images.join(", ")}` : "لا توجد صور حاليا";
+      updateKindUI();
+      saveBtn.textContent = "حفظ التعديل";
+    }
+
+    async function handleDelete(id){
+      if(!rootHandle){
+        setStatus("يجب ربط مجلد الموقع اولا.");
+        return;
+      }
+      const item = posts.find(p=>p.id === id);
+      if(!item) return;
+      if(!confirm("هل انت متاكد من الحذف؟")) return;
+
+      const adsDir = await rootHandle.getDirectoryHandle(ADS_DIR, { create: true });
+      const listHandle = await rootHandle.getFileHandle("list.txt", { create: true });
+      const folderName = item.adNo;
+      try{
+        await adsDir.removeEntry(folderName, { recursive: true });
+      }catch(e){
+        console.warn(e);
+      }
+      const listText = await readList();
+      const folders = parseList(listText).filter(f=>f !== `${ADS_DIR}/${folderName}`);
+      await writeTextFile(listHandle, folders.join("\n"));
+      setStatus("تم حذف المنشور.");
+      await loadPosts();
+      resetForm();
+    }
+
+    kindEl.addEventListener("change", updateKindUI);
+    filterKind.addEventListener("change", ()=>{
+      updateFilterTypeOptions();
+      renderPosts();
+    });
+    searchInput.addEventListener("input", renderPosts);
+    filterType.addEventListener("change", renderPosts);
+    refreshBtn.addEventListener("click", loadPosts);
+    resetBtn.addEventListener("click", resetForm);
+    form.addEventListener("submit", savePost);
+
+    postsList.addEventListener("click", (e)=>{
+      const editBtn = e.target.closest("[data-edit]");
+      if(editBtn) handleEdit(Number(editBtn.dataset.edit));
+      const delBtn = e.target.closest("[data-delete]");
+      if(delBtn) handleDelete(Number(delBtn.dataset.delete));
+    });
+
+    connectBtn.addEventListener("click", connectRoot);
+    logoutBtn.addEventListener("click", ()=>{
+      sessionStorage.removeItem(SESSION_KEY);
+      showGate(true);
+    });
+
+    loginBtn.addEventListener("click", ()=>{
+      if(!config){
+        loginStatus.textContent = "تعذر قراءة الكونفق.";
+        return;
+      }
+      if(passwordInput.value === config.password){
+        sessionStorage.setItem(SESSION_KEY, "ok");
+        showGate(false);
+      }else{
+        loginStatus.textContent = "كلمة المرور غير صحيحة.";
+      }
+    });
+
+    updateKindUI();
+    updateFilterTypeOptions();
+    ensureAuth().then(ok=>{ if(ok) loadPosts(); });
+  </script>
+</body>
+</html>
