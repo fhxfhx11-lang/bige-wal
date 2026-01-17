@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>إعدادات الموقع</title>
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b111a;
+      --panel:#141c27;
+      --panel-2:#0f1622;
+      --text:#f2f6ff;
+      --muted:#a8b6c8;
+      --line:rgba(255,255,255,.12);
+      --brand:#22c55e;
+      --accent:#f59e0b;
+      --danger:#ef4444;
+      --radius:18px;
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Changa", sans-serif;
+      background: radial-gradient(900px 600px at 20% -10%, rgba(34,197,94,.18), transparent 60%),
+                  radial-gradient(900px 600px at 90% 110%, rgba(245,158,11,.16), transparent 60%),
+                  linear-gradient(180deg, #0b1018, #0f1726 60%, #0c121c);
+      color:var(--text);
+      min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none}
+
+    .container{max-width:1000px;margin:0 auto;padding:0 18px}
+
+    header{
+      position:sticky;top:0;z-index:10;
+      backdrop-filter: blur(12px);
+      background: rgba(10,16,24,.7);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0}
+    .logo{
+      width:44px;height:44px;border-radius:16px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      display:grid;place-items:center;color:#071a10;font-weight:900;
+      box-shadow:0 14px 30px rgba(34,197,94,.25);
+    }
+
+    .btn{
+      border:none;cursor:pointer;border-radius:14px;
+      padding:10px 14px;font-weight:800;
+      background: linear-gradient(135deg, var(--brand), #4ade80);
+      color:#071a10;transition:.18s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.secondary{
+      background: rgba(255,255,255,.06);
+      color:var(--text);border:1px solid var(--line);
+    }
+    .btn.danger{background: linear-gradient(135deg, #ef4444, #f97316);color:#1c0808}
+
+    .panel{
+      background: var(--panel);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:16px;
+      margin:18px 0 30px;
+    }
+    .panel h2{margin:0 0 10px;font-size:18px}
+    .panel p{margin:0;color:var(--muted);line-height:1.7}
+
+    .input, textarea, select{
+      width:100%;background: var(--panel-2);
+      border:1px solid var(--line);
+      border-radius:14px;color:var(--text);
+      padding:10px 12px;outline:none;font-size:14px;
+    }
+    textarea{min-height:100px;resize:vertical}
+
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .form-row.three{grid-template-columns:1fr 1fr 1fr}
+    @media (max-width: 720px){.form-row,.form-row.three{grid-template-columns:1fr}}
+
+    .muted{color:var(--muted);font-size:12px}
+    .divider{height:1px;background:var(--line);margin:14px 0}
+
+    .branch-list{display:grid;gap:10px}
+    .branch-card{padding:10px;border:1px solid var(--line);border-radius:14px;background: rgba(255,255,255,.03)}
+
+    .hidden{display:none !important}
+    .auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+    .auth-box{width:min(420px, 100%);text-align:center}
+    .note{
+      padding:10px;border-radius:12px;background: rgba(34,197,94,.12);
+      border:1px solid rgba(34,197,94,.35);color:#dcfce7;font-size:13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-wrap" id="auth">
+    <div class="panel auth-box">
+      <div class="logo" style="margin:0 auto 12px">إع</div>
+      <h1>إعدادات الموقع</h1>
+      <p class="muted">أدخل كلمة المرور للمتابعة.</p>
+      <div style="display:grid;gap:10px;margin-top:14px">
+        <input class="input" id="password" type="password" placeholder="كلمة المرور" />
+        <button class="btn" id="loginBtn">دخول</button>
+        <p class="muted" id="loginMsg"></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="app" class="hidden">
+    <header>
+      <div class="container">
+        <div class="nav">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="logo" id="siteLogo">إع</div>
+            <div>
+              <div style="font-weight:800" id="siteName">إعدادات الموقع</div>
+              <div class="muted">تعديل الاسم والشعار والمعلومات</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <a class="btn secondary" href="../">العودة للوحة</a>
+            <button class="btn secondary" id="logoutBtn">تسجيل خروج</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="panel">
+        <h2>بيانات الموقع</h2>
+        <p class="muted">هذه البيانات تُكتب في ملف config.json ليتم قراءتها من الصفحة الرئيسية.</p>
+        <div class="divider"></div>
+        <div class="form-row">
+          <div>
+            <label class="muted">اسم الموقع</label>
+            <input class="input" id="siteNameInput" />
+          </div>
+          <div>
+            <label class="muted">النص داخل الشعار</label>
+            <input class="input" id="logoTextInput" placeholder="حرف أو حرفين" />
+          </div>
+        </div>
+
+        <div class="form-row" style="margin-top:10px">
+          <div>
+            <label class="muted">السطر التعريفي</label>
+            <input class="input" id="taglineInput" />
+          </div>
+          <div>
+            <label class="muted">عنوان الصفحة الرئيسية</label>
+            <input class="input" id="heroTitleInput" />
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label class="muted">وصف الصفحة الرئيسية</label>
+          <textarea class="input" id="heroSubtitleInput"></textarea>
+        </div>
+
+        <div class="form-row" style="margin-top:10px">
+          <div>
+            <label class="muted">عنوان قسم من نحن</label>
+            <input class="input" id="aboutTitleInput" />
+          </div>
+          <div>
+            <label class="muted">سطر المميزات (يمكن HTML)</label>
+            <input class="input" id="aboutHighlightsInput" />
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label class="muted">نص من نحن</label>
+          <textarea class="input" id="aboutTextInput"></textarea>
+        </div>
+
+        <div class="form-row" style="margin-top:10px">
+          <div>
+            <label class="muted">عنوان الفروع</label>
+            <input class="input" id="branchesTitleInput" />
+          </div>
+          <div>
+            <label class="muted">ساعات العمل</label>
+            <input class="input" id="workHoursInput" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <h2>الفروع</h2>
+        <div class="branch-list" id="branchesList"></div>
+        <button class="btn secondary" id="addBranchBtn" style="margin-top:10px">إضافة فرع</button>
+
+        <div class="divider"></div>
+        <div class="form-row">
+          <div>
+            <label class="muted">رقم واتساب (دولي)</label>
+            <input class="input" id="whatsappInput" />
+          </div>
+          <div>
+            <label class="muted">العملة</label>
+            <input class="input" id="currencyInput" />
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>إعدادات الدخول</h2>
+        <p class="muted">تغيير كلمة المرور وساعات الجلسة.</p>
+        <div class="divider"></div>
+        <div class="form-row">
+          <div>
+            <label class="muted">كلمة المرور الجديدة</label>
+            <input class="input" id="adminPasswordInput" type="password" />
+          </div>
+          <div>
+            <label class="muted">مدة الجلسة (ساعات)</label>
+            <input class="input" id="sessionHoursInput" type="number" min="1" />
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>حفظ وتصدير</h2>
+        <p class="muted">احفظ محلياً للمتابعة، ثم حمّل ملف config.json واستبدله على الاستضافة.</p>
+        <div class="divider"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" id="saveBtn">حفظ محلي</button>
+          <button class="btn secondary" id="downloadBtn">تحميل config.json</button>
+          <button class="btn danger" id="resetBtn">إرجاع الافتراضي</button>
+        </div>
+        <p class="muted" id="saveMsg" style="margin-top:10px"></p>
+      </section>
+
+      <div class="note">لن تظهر التغييرات في الصفحة الرئيسية إلا بعد استبدال ملف `dashbord/config.json` بالنسخة الجديدة.</div>
+    </main>
+  </div>
+
+  <script>
+    const CONFIG_PATH = "../config.json";
+    const STORAGE_KEYS = {
+      site: "bw_site_settings_v1",
+      admin: "bw_admin_settings_v1",
+      auth: "bw_admin_auth_v1"
+    };
+
+    const $ = (s)=>document.querySelector(s);
+
+    const state = {
+      config: null,
+      site: null,
+      admin: null,
+      branches: []
+    };
+
+    function readJSON(key){
+      try{ return JSON.parse(localStorage.getItem(key) || "null"); }
+      catch{ return null; }
+    }
+    function writeJSON(key, value){
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function renderBranches(){
+      const wrap = $("#branchesList");
+      wrap.innerHTML = "";
+      state.branches.forEach((branch, index) => {
+        const card = document.createElement("div");
+        card.className = "branch-card";
+        card.innerHTML = `
+          <div class="form-row">
+            <div>
+              <label class="muted">اسم الفرع</label>
+              <input class="input" data-branch-name="${index}" value="${branch.name || ""}" />
+            </div>
+            <div>
+              <label class="muted">عنوان الفرع</label>
+              <input class="input" data-branch-address="${index}" value="${branch.address || ""}" />
+            </div>
+          </div>
+          <button class="btn danger" data-branch-remove="${index}" style="margin-top:8px">حذف الفرع</button>
+        `;
+        wrap.appendChild(card);
+      });
+    }
+
+    function collectSite(){
+      return {
+        name: $("#siteNameInput").value.trim(),
+        logoText: $("#logoTextInput").value.trim(),
+        tagline: $("#taglineInput").value.trim(),
+        heroTitle: $("#heroTitleInput").value.trim(),
+        heroSubtitle: $("#heroSubtitleInput").value.trim(),
+        aboutTitle: $("#aboutTitleInput").value.trim(),
+        aboutHighlights: $("#aboutHighlightsInput").value.trim(),
+        aboutText: $("#aboutTextInput").value.trim(),
+        branchesTitle: $("#branchesTitleInput").value.trim(),
+        workHours: $("#workHoursInput").value.trim(),
+        whatsapp: $("#whatsappInput").value.trim(),
+        currency: $("#currencyInput").value.trim(),
+        branches: state.branches.slice()
+      };
+    }
+
+    function populateForm(){
+      const site = state.site || {};
+      $("#siteNameInput").value = site.name || "";
+      $("#logoTextInput").value = site.logoText || "";
+      $("#taglineInput").value = site.tagline || "";
+      $("#heroTitleInput").value = site.heroTitle || "";
+      $("#heroSubtitleInput").value = site.heroSubtitle || "";
+      $("#aboutTitleInput").value = site.aboutTitle || "";
+      $("#aboutHighlightsInput").value = site.aboutHighlights || "";
+      $("#aboutTextInput").value = site.aboutText || "";
+      $("#branchesTitleInput").value = site.branchesTitle || "";
+      $("#workHoursInput").value = site.workHours || "";
+      $("#whatsappInput").value = site.whatsapp || "";
+      $("#currencyInput").value = site.currency || "";
+
+      state.branches = Array.isArray(site.branches) ? site.branches : [];
+      renderBranches();
+
+      $("#adminPasswordInput").value = "";
+      $("#sessionHoursInput").value = state.admin?.sessionHours || 8;
+    }
+
+    function downloadText(name, content){
+      const blob = new Blob([content], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function loadAuth(){
+      const auth = readJSON(STORAGE_KEYS.auth);
+      if(!auth) return false;
+      if(auth.until < Date.now()) return false;
+      if(!state.admin) return false;
+      return auth.key === btoa(state.admin.password || "");
+    }
+
+    function setAuth(){
+      const hours = state.admin.sessionHours || 8;
+      const until = Date.now() + hours * 60 * 60 * 1000;
+      writeJSON(STORAGE_KEYS.auth, { until, key: btoa(state.admin.password || "") });
+    }
+
+    function logout(){
+      localStorage.removeItem(STORAGE_KEYS.auth);
+      location.reload();
+    }
+
+    async function loadConfig(){
+      try{
+        const res = await fetch(CONFIG_PATH, { cache: "no-store" });
+        if(res.ok){
+          state.config = await res.json();
+        }
+      }catch(err){
+        console.warn(err);
+      }
+
+      const localSite = readJSON(STORAGE_KEYS.site);
+      const localAdmin = readJSON(STORAGE_KEYS.admin);
+      state.site = { ...(state.config?.site || {}), ...(localSite || {}) };
+      state.admin = { ...(state.config?.admin || {}), ...(localAdmin || {}) };
+
+      $("#siteName").textContent = state.site?.name || "إعدادات الموقع";
+      $("#siteLogo").textContent = state.site?.logoText || "إع";
+    }
+
+    document.addEventListener("input", (e)=>{
+      const name = e.target.getAttribute("data-branch-name");
+      const addr = e.target.getAttribute("data-branch-address");
+      if(name !== null){
+        state.branches[Number(name)].name = e.target.value;
+      }
+      if(addr !== null){
+        state.branches[Number(addr)].address = e.target.value;
+      }
+    });
+
+    document.addEventListener("click", (e)=>{
+      const removeBtn = e.target.closest("[data-branch-remove]");
+      if(removeBtn){
+        const idx = Number(removeBtn.dataset.branchRemove);
+        state.branches.splice(idx, 1);
+        renderBranches();
+      }
+    });
+
+    $("#addBranchBtn").addEventListener("click", ()=>{
+      state.branches.push({ name: "", address: "" });
+      renderBranches();
+    });
+
+    $("#saveBtn").addEventListener("click", ()=>{
+      const site = collectSite();
+      const password = $("#adminPasswordInput").value.trim();
+      const sessionHours = Number($("#sessionHoursInput").value) || 8;
+      const admin = { ...(state.admin || {}), sessionHours };
+      if(password) admin.password = password;
+
+      state.site = site;
+      state.admin = admin;
+
+      writeJSON(STORAGE_KEYS.site, site);
+      writeJSON(STORAGE_KEYS.admin, admin);
+      setAuth();
+
+      $("#saveMsg").textContent = "تم الحفظ محلياً. يمكنك الآن تحميل config.json.";
+    });
+
+    $("#downloadBtn").addEventListener("click", ()=>{
+      const site = collectSite();
+      const password = $("#adminPasswordInput").value.trim();
+      const sessionHours = Number($("#sessionHoursInput").value) || (state.admin?.sessionHours || 8);
+      const admin = { ...(state.admin || {}), sessionHours };
+      if(password) admin.password = password;
+
+      const payload = JSON.stringify({ admin, site }, null, 2);
+      downloadText("config.json", payload);
+      $("#saveMsg").textContent = "تم تجهيز الملف. استبدله داخل dashbord/config.json.";
+    });
+
+    $("#resetBtn").addEventListener("click", ()=>{
+      localStorage.removeItem(STORAGE_KEYS.site);
+      localStorage.removeItem(STORAGE_KEYS.admin);
+      state.site = state.config?.site || {};
+      state.admin = state.config?.admin || {};
+      populateForm();
+      $("#saveMsg").textContent = "تمت العودة إلى إعدادات الملف.";
+    });
+
+    $("#logoutBtn").addEventListener("click", logout);
+
+    $("#loginBtn").addEventListener("click", ()=>{
+      const pass = $("#password").value.trim();
+      if(pass && state.admin && pass === state.admin.password){
+        setAuth();
+        $("#auth").classList.add("hidden");
+        $("#app").classList.remove("hidden");
+      }else{
+        $("#loginMsg").textContent = "كلمة المرور غير صحيحة.";
+      }
+    });
+
+    async function init(){
+      await loadConfig();
+      populateForm();
+      if(loadAuth()){
+        $("#auth").classList.add("hidden");
+        $("#app").classList.remove("hidden");
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
